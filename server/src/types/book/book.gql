@@ -1,0 +1,43 @@
+type Book {
+  id: ID!
+  title: String!
+  authors: [Author!]!
+  summary: String!
+  isbn: String!
+  genres: [Genre!]!
+  url: String
+}
+
+input BookInput {
+  title: String!
+  authors: [AuthorBookInput!]!
+  summary: String!
+  isbn: String!
+  genres: [GenreBookInput!]!
+}
+
+input UpdateBookInput {
+  title: String
+  authors: [AuthorBookInput]
+  summary: String
+  isbn: String
+  genres: [GenreBookInput]
+}
+
+input AuthorBookInput {
+  id: ID!
+}
+
+input GenreBookInput {
+  id: ID!
+}
+extend type Query {
+  books: [Book]
+  book(id: ID!): Book
+}
+
+extend type Mutation {
+  addBook(input: BookInput!): Book!
+  updateBook(id: ID!, input: UpdateBookInput!): Book!
+  deleteBook(id: ID!): Book!
+}

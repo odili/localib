@@ -1,0 +1,49 @@
+scalar Date
+
+# interface MutationResponse {
+#   code: String!
+#   success: Boolean!
+#   message: String!
+# }
+
+union Result = Book | Author | Genre
+
+type Author {
+  id: ID!
+  firstName: String!
+  familyName: String!
+  name: String
+  dateOfBirth: Date
+  dateOfDeath: Date
+  lifespan: String
+  dobInput: String
+  dodInput: String
+  books: [Book!]!
+  url: String
+}
+
+input AuthorInput {
+  firstName: String!
+  familyName: String!
+  dateOfBirth: Date
+  dateOfDeath: Date
+}
+
+input AuthorUpdateInput {
+  firstName: String
+  familyName: String
+  dateOfBirth: Date
+  dateOfDeath: Date
+}
+
+type Query {
+  authors: [Author]
+  author(id: ID!): Author
+  search: [Result]
+}
+
+type Mutation {
+  addAuthor(input: AuthorInput!): Author!
+  updateAuthor(id: ID!, input: AuthorUpdateInput!): Author!
+  deleteAuthor(id: ID!): Author!
+}

@@ -1,0 +1,42 @@
+enum Status {
+  AVAILABLE
+  MAINTENANCE
+  LOANED
+  RESERVED
+}
+
+type BookInstance {
+  id: ID!
+  book: Book!
+  imprint: String!
+  status: Status!
+  dueBack: Date
+  url: String
+}
+input BookInstanceBookInput {
+  id: ID!
+}
+input BookInstanceInput {
+  book: BookInstanceBookInput!
+  imprint: String!
+  status: Status!
+  dueBack: Date
+}
+
+input UpdateBookInstanceInput {
+  book: BookInstanceBookInput
+  imprint: String
+  status: Status
+  dueBack: Date
+}
+
+extend type Query {
+  bookInstances: [BookInstance]
+  bookInstance(id: ID!): BookInstance
+}
+
+extend type Mutation {
+  addBookInstance(input: BookInstanceInput!): BookInstance
+  updateBookInstance(id: ID!, input: UpdateBookInstanceInput): BookInstance
+  deleteBookInstance(id: ID!): BookInstance
+}
