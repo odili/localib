@@ -1,12 +1,12 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
+import { Cancel } from '@material-ui/icons';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import DisplayContent from '../components/elements/DisplayContent';
 import { LibTextField } from '../components/elements/LibTextField';
-import { gql } from 'apollo-boost';
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery, gql } from '@apollo/client';
 import { useHistory, useParams } from 'react-router-dom';
 import { LibForm } from '../components/elements/LibForm';
 
@@ -20,6 +20,10 @@ const UpdateAuthor = () => {
     onCompleted: data => history.push(data.updateAuthor.url),
     onError: err => console.log(err),
   });
+
+  const cancelUpdate = () => {
+    history.push(data.author.url);
+  };
 
   if (loading) {
     return <DisplayContent>Loading...</DisplayContent>;
@@ -79,15 +83,27 @@ const UpdateAuthor = () => {
               shrink: true,
             }}
           />
-          <Button
-            variant="contained"
-            color="primary"
-            size="large"
-            type="submit"
-            startIcon={<SaveIcon />}
-          >
-            update
-          </Button>
+          <div className="buttom-actions">
+            <Button
+              variant="contained"
+              color="secondary"
+              size="large"
+              type="button"
+              onClick={cancelUpdate}
+              startIcon={<Cancel />}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              type="submit"
+              startIcon={<SaveIcon />}
+            >
+              Save
+            </Button>
+          </div>
         </LibForm>
       </Formik>
     </DisplayContent>
@@ -113,6 +129,7 @@ const GET_AUTHOR = gql`
       familyName
       dobInput
       dodInput
+      url
     }
   }
 `;

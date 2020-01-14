@@ -40,4 +40,10 @@ authorSchema.virtual('url').get(function() {
   return `/author/${this._id}`;
 });
 
+authorSchema.virtual('books', {
+  ref: 'book',
+  localField: '_id',
+  foreignField: 'authors',
+});
+
 module.exports = mongoose.model('author', authorSchema);

@@ -22,6 +22,10 @@ type Author {
   url: String
 }
 
+enum SortOrder {
+  ASC
+  DESC
+}
 input AuthorInput {
   firstName: String!
   familyName: String!
@@ -37,7 +41,7 @@ input AuthorUpdateInput {
 }
 
 type Query {
-  authors: [Author]
+  authors(sort: SortOrder): [Author]
   author(id: ID!): Author
   search: [Result]
 }

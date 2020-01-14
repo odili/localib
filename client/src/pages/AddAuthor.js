@@ -1,12 +1,12 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
+import { Cancel } from '@material-ui/icons';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import DisplayContent from '../components/elements/DisplayContent';
 import { LibTextField } from '../components/elements/LibTextField';
-import { gql } from 'apollo-boost';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation, gql } from '@apollo/client';
 import { useHistory } from 'react-router-dom';
 import { LibForm } from '../components/elements/LibForm';
 
@@ -17,6 +17,9 @@ const AddAuthor = () => {
     onError: err => console.log(err),
   });
 
+  const cancelEntry = () => {
+    history.push('/authors');
+  };
   return (
     <DisplayContent>
       <h1>Add New Author</h1>
@@ -69,15 +72,27 @@ const AddAuthor = () => {
               shrink: true,
             }}
           />
-          <Button
-            variant="contained"
-            color="primary"
-            size="large"
-            type="submit"
-            startIcon={<SaveIcon />}
-          >
-            Save
-          </Button>
+          <div className="buttom-actions">
+            <Button
+              variant="contained"
+              color="secondary"
+              size="large"
+              type="button"
+              onClick={cancelEntry}
+              startIcon={<Cancel />}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              type="submit"
+              startIcon={<SaveIcon />}
+            >
+              Save
+            </Button>
+          </div>
         </LibForm>
       </Formik>
     </DisplayContent>

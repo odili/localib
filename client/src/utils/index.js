@@ -1,4 +1,4 @@
-export function libArrayObjectSort(key, order = 'asc') {
+export function arrayObjectSort(key, order = 'asc') {
   return function innerSort(a, b) {
     if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
       // property doesn't exist on either object
@@ -14,4 +14,16 @@ export function libArrayObjectSort(key, order = 'asc') {
     }
     return order === 'desc' ? comparison * -1 : comparison;
   };
+}
+
+export function arrayStringSort(a, b) {
+  let nameA = a.name.toUpperCase();
+  let nameB = b.name.toUpperCase();
+  if (nameA < nameB) {
+    return -1;
+  }
+  if (nameA > nameB) {
+    return 1;
+  }
+  return 0;
 }

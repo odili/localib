@@ -1,9 +1,7 @@
 import React from 'react';
-import { useQuery } from '@apollo/react-hooks';
-import { gql } from 'apollo-boost';
+import { useQuery, gql } from '@apollo/client';
 import { Ul, Li } from './elements/Li';
 import { Link } from 'react-router-dom';
-import stringSort from '../utils/stringSort';
 
 export default function AuthorList() {
   const { loading, error, data } = useQuery(AUTHORS);
@@ -14,7 +12,8 @@ export default function AuthorList() {
   if (error) {
     return <p>Error: {error}</p>;
   }
-  const authors = data.authors.sort(stringSort).map(author => {
+
+  const authors = data.authors.map(author => {
     return (
       <Li key={author.id}>
         <Link to={author.url}> {author.name}</Link>{' '}

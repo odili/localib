@@ -6,7 +6,10 @@ export const LibForm = styled(Form)`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
   grid-gap: 2rem;
-  & button {
-    justify-self: center;
+  & .buttom-actions {
+    text-align: center;
+  }
+  button[type='submit'] {
+    margin-left: 1.5rem;
   }
 `;

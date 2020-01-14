@@ -1,10 +1,10 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
+import { Cancel } from '@material-ui/icons';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { gql } from 'apollo-boost';
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery, gql } from '@apollo/client';
 import { useHistory, useParams } from 'react-router-dom';
 import DisplayContent from '../components/elements/DisplayContent';
 import { LibTextField } from '../components/elements/LibTextField';
@@ -21,6 +21,9 @@ const UpdateGenre = () => {
     onError: err => console.log(err),
   });
 
+  const cancelUpdate = () => {
+    history.push(data.genre.url);
+  };
   if (loading) {
     return <DisplayContent>Loading...</DisplayContent>;
   }
@@ -58,15 +61,27 @@ const UpdateGenre = () => {
             variant="filled"
           />
 
-          <Button
-            variant="contained"
-            color="primary"
-            size="large"
-            type="submit"
-            startIcon={<SaveIcon />}
-          >
-            Save
-          </Button>
+          <div className="buttom-actions">
+            <Button
+              variant="contained"
+              color="secondary"
+              size="large"
+              type="button"
+              onClick={cancelUpdate}
+              startIcon={<Cancel />}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              type="submit"
+              startIcon={<SaveIcon />}
+            >
+              Save
+            </Button>
+          </div>
         </LibForm>
       </Formik>
     </DisplayContent>
@@ -89,6 +104,7 @@ const GET_GENRE = gql`
     genre(id: $id) {
       id
       name
+      url
     }
   }
 `;

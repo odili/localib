@@ -1,33 +1,13 @@
-import { config } from './dev';
+require('dotenv').config();
 
-const env = 'development';
-const baseConfig = {
-  env,
-  isDev: env === 'development',
-  isTest: env === 'testing',
-  port: 4400,
-};
+let PORT = process.env.PORT;
+let MONGODB_URI = process.env.MONGODB_URI;
 
-// let envConfig = {};
+if (process.env.NODE_ENV === 'test') {
+  MONGODB_URI = process.env.TEST_MONGODB_URI;
+}
 
-// switch (env) {
-//   case 'dev':
-//   case 'development':
-//     envConfig = import('./dev').config;
-//     break;
-//   case 'test':
-//   case 'testing':
-//     envConfig = require('./testing').config;
-//     break;
-//   case 'prod':
-//   case 'production':
-//     envConfig = require('./prod').config;
-//     break;
-//   default:
-//     envConfig = require('./dev').config;
-// }
-
-export default {
-  ...baseConfig,
-  ...config,
+module.exports = {
+  MONGODB_URI,
+  PORT,
 };

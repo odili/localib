@@ -1,13 +1,16 @@
-import Genre from './genre';
-import Book from '../book/book';
+const Genre = require('./genre');
+// const Book = require('../book/book');
 
 const genres = (_, args, ctx) => {
-  return Genre.find({}).exec();
+  return Genre.find({})
+    .populate('books')
+    .sort({ name: args.sort === 'DESC' ? -1 : 1 })
+    .exec();
 };
 
 const genre = (_, args, ctx) => {
   return Genre.findById(args.id)
-    .populate('book')
+    .populate('books')
     .exec();
 };
 
@@ -23,11 +26,11 @@ const deleteGenre = (_, args, ctx) => {
   return Genre.deleteOne({ _id: args.id });
 };
 
-const books = parent => {
-  return Book.find({ genres: parent._id });
-};
+// const books = parent => {
+//   return Book.find({ genres: parent._id });
+// };
 
-export default {
+module.exports = {
   Query: {
     genre,
     genres,
@@ -37,7 +40,7 @@ export default {
     updateGenre,
     deleteGenre,
   },
-  Genre: {
-    books,
-  },
+  // Genre: {
+  //   books,
+  // },
 };

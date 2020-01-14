@@ -1,17 +1,15 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
+import { Cancel } from '@material-ui/icons';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import DisplayContent from '../components/elements/DisplayContent';
 import { LibTextField } from '../components/elements/LibTextField';
-import { gql } from 'apollo-boost';
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery, gql } from '@apollo/client';
 import { useHistory } from 'react-router-dom';
 import { LibForm } from '../components/elements/LibForm';
-import { libArrayObjectSort } from '../utils/libArrayObjectSort';
-// import stringSort from '../utils/stringSort';
 
 const AddBookInstance = () => {
   let history = useHistory();
@@ -23,6 +21,10 @@ const AddBookInstance = () => {
     onError: err => console.log(err),
   });
   const status = ['AVAILABLE', 'MAINTENANCE', 'LOANED', 'RESERVED'];
+
+  const cancelEntry = () => {
+    history.push('/bookinstances');
+  };
 
   if (loading) {
     return <DisplayContent>Loading...</DisplayContent>;
@@ -66,7 +68,7 @@ const AddBookInstance = () => {
             helperText="Select Title"
             variant="filled"
           >
-            {data.books.sort(libArrayObjectSort('title')).map(book => (
+            {data.books.map(book => (
               <MenuItem key={book.id} value={book.id}>
                 {book.title}
               </MenuItem>
@@ -99,15 +101,27 @@ const AddBookInstance = () => {
               shrink: true,
             }}
           />
-          <Button
-            variant="contained"
-            color="primary"
-            size="large"
-            type="submit"
-            startIcon={<SaveIcon />}
-          >
-            Add
-          </Button>
+          <div className="buttom-actions">
+            <Button
+              variant="contained"
+              color="secondary"
+              size="large"
+              type="button"
+              onClick={cancelEntry}
+              startIcon={<Cancel />}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              type="submit"
+              startIcon={<SaveIcon />}
+            >
+              Save
+            </Button>
+          </div>
         </LibForm>
       </Formik>
     </DisplayContent>

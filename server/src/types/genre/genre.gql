@@ -14,7 +14,7 @@ input UpdateGenreInput {
 }
 
 extend type Query {
-  genres: [Genre]
+  genres(sort: SortOrder): [Genre]
   genre(id: ID!): Genre
 }
 

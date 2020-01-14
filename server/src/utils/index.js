@@ -1,7 +1,7 @@
-import fs from 'fs';
-import path from 'path';
+const fs = require('fs');
+const path = require('path');
 
-export const loadSchema = type =>
+exports.loadSchema = type =>
   new Promise((resolve, reject) => {
     const pathTOSchema = path.join(
       process.cwd(),

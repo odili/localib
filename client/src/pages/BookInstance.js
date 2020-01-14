@@ -1,6 +1,5 @@
 import React from 'react';
-import { useQuery } from '@apollo/react-hooks';
-import { gql } from 'apollo-boost';
+import { useQuery, gql } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 import DisplayContent from '../components/elements/DisplayContent';
 import SmallTitle from '../components/elements/SmallTitle';

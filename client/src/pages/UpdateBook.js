@@ -1,12 +1,12 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
+import { Cancel } from '@material-ui/icons';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import DisplayContent from '../components/elements/DisplayContent';
 import { LibTextField } from '../components/elements/LibTextField';
-import { gql } from 'apollo-boost';
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery, gql } from '@apollo/client';
 import { useHistory, useParams } from 'react-router-dom';
 import { LibForm } from '../components/elements/LibForm';
 import { TextField, Chip } from '@material-ui/core';
@@ -24,6 +24,10 @@ const UpdateBook = () => {
     },
     onError: err => console.log(err),
   });
+
+  const cancelUpdate = () => {
+    history.push(data.book.url);
+  };
 
   if (loading) {
     return <DisplayContent>Loading...</DisplayContent>;
@@ -148,16 +152,27 @@ const UpdateBook = () => {
                 />
               )}
             />
-
-            <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              type="submit"
-              startIcon={<SaveIcon />}
-            >
-              Save
-            </Button>
+            <div className="buttom-actions">
+              <Button
+                variant="contained"
+                color="secondary"
+                size="large"
+                type="button"
+                onClick={cancelUpdate}
+                startIcon={<Cancel />}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                size="large"
+                type="submit"
+                startIcon={<SaveIcon />}
+              >
+                Save
+              </Button>
+            </div>
           </LibForm>
         )}
       </Formik>
@@ -183,6 +198,7 @@ const BOOK_DETAILS = gql`
       title
       isbn
       summary
+      url
       authors {
         id
         name

@@ -5,6 +5,7 @@ type Book {
   summary: String!
   isbn: String!
   genres: [Genre!]!
+  status: [BookInstance]
   url: String
 }
 
@@ -32,7 +33,7 @@ input GenreBookInput {
   id: ID!
 }
 extend type Query {
-  books: [Book]
+  books(sort: SortOrder): [Book]
   book(id: ID!): Book
 }
 

@@ -1,6 +1,5 @@
 import React from 'react';
-import { useQuery } from '@apollo/react-hooks';
-import { gql } from 'apollo-boost';
+import { useQuery, gql } from '@apollo/client';
 import { useParams, Link } from 'react-router-dom';
 import { Ul, Li } from '../components/elements/Li';
 import Small from '../components/elements/Small';

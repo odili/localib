@@ -1,8 +1,10 @@
-import BookInstance from './bookInstance';
-import Book from '../book/book';
+const BookInstance = require('./bookInstance');
+const Book = require('../book/book');
 
 const bookInstances = (_, args, ctx) => {
-  return BookInstance.find({}).exec();
+  return BookInstance.find({})
+    .populate('book')
+    .exec();
 };
 
 const bookInstance = (_, args, ctx) => {
@@ -33,11 +35,11 @@ const deleteBookInstance = (_, args, ctx) => {
   return BookInstance.deleteOne({ _id: args.id });
 };
 
-const book = parent => {
-  return Book.findById(parent.book._id).exec();
-};
+// const book = parent => {
+//   return Book.findById(parent.book._id).exec();
+// };
 
-export default {
+module.exports = {
   Query: {
     bookInstance,
     bookInstances,
@@ -47,7 +49,7 @@ export default {
     updateBookInstance,
     deleteBookInstance,
   },
-  BookInstance: {
-    book,
-  },
+  // BookInstance: {
+  //   book,
+  // },
 };

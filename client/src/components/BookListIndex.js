@@ -1,6 +1,5 @@
 import React from 'react';
-import { useQuery } from '@apollo/react-hooks';
-import { gql } from 'apollo-boost';
+import { useQuery, gql } from '@apollo/client';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -10,6 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { Link } from 'react-router-dom';
 import SmallTitle from './elements/SmallTitle';
+import Small from './elements/Small';
 
 const useStyles = makeStyles({
   root: {
@@ -30,6 +30,9 @@ export default function BookListIndex() {
   if (error) {
     return <p>Error: {error}</p>;
   }
+  const topList = data.books.filter(b =>
+    b.status.some(s => s.status === 'AVAILABLE')
+  );
 
   return (
     <>
@@ -45,7 +48,7 @@ export default function BookListIndex() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.books.map(book => (
+            {topList.map(book => (
               <TableRow key={book.id}>
                 <TableCell component="th" scope="row">
                   <Link to={book.url}>{book.title}</Link>
@@ -64,7 +67,9 @@ export default function BookListIndex() {
                     </span>
                   ))}
                 </TableCell>
-                <TableCell align="right">{book.isbn}</TableCell>
+                <TableCell align="right">
+                  <Small status="AVAILABLE"> AVAILABLE</Small>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -87,6 +92,9 @@ const BOOK_LIST = gql`
       }
       genres {
         name
+      }
+      status {
+        status
       }
     }
   }

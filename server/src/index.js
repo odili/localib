@@ -1,17 +1,16 @@
-import { ApolloServer } from 'apollo-server';
-import fs from 'fs';
-import mongoose from 'mongoose';
-import { merge } from 'lodash';
-import { loadSchema } from './utils/loadSchema';
-import config from './config';
-import authorResolver from './types/author/authorResolver';
-import bookResolver from './types/book/bookResolver';
-import bookInstanceResolver from './types/bookInstance/bookInstanceResolver';
-import genreResolver from './types/genre/genreResolver';
-import dateResolver from './utils/dateResolver';
+const { ApolloServer } = require('apollo-server');
+const fs = require('fs');
+const mongoose = require('mongoose');
+const { merge } = require('lodash');
+const { loadSchema } = require('./utils');
+const config = require('./config');
+const authorResolver = require('./types/author/authorResolver');
+const bookResolver = require('./types/book/bookResolver');
+const bookInstanceResolver = require('./types/bookInstance/bookInstanceResolver');
+const genreResolver = require('./types/genre/genreResolver');
+const dateResolver = require('./utils/dateResolver');
 
 const types = fs.readdirSync(`./src/types`);
-
 const start = async () => {
   const schemaTypes = await Promise.all(types.map(loadSchema));
   const server = new ApolloServer({
@@ -26,11 +25,18 @@ const start = async () => {
     ),
   });
 
-  await mongoose.connect(config.dbUrl, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-  });
+  mongoose
+    .connect(config.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false,
+    })
+    .then(() => {
+      console.log('connected to MongoDB 🗄');
+    })
+    .catch(error => {
+      console.log('🛑 error connection to MongoDB: ' + error.message);
+    });
 
   server.listen().then(({ url }) => {
     console.log(`🚀 Server ready at ${url}`);

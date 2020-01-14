@@ -1,18 +1,21 @@
-import Book from './book';
-import Author from '../author/author';
-import Genre from '../genre/genre';
+const Book = require('./book');
+// const Author = require('../author/author');
+// const Genre = require('../genre/genre');
 
-const books = (_, res, cts) => {
-  return Book.find({}).exec();
+const books = (_, args, ctx) => {
+  return Book.find({})
+    .populate('authors')
+    .populate('genres')
+    .populate('status')
+    .sort({ title: args.sort === 'DESC' ? -1 : 1 })
+    .exec();
 };
 
-const book = (_, args, cts) => {
-  return (
-    Book.findById(args.id)
-      // .populate('authors')
-      // .populate('genres')
-      .exec()
-  );
+const book = (_, args, ctx) => {
+  return Book.findById(args.id)
+    .populate('authors')
+    .populate('genres')
+    .exec();
 };
 
 const addBook = (_, args, ctx) => {
@@ -47,15 +50,17 @@ const deleteBook = (_, args, ctx) => {
   return Book.deleteOne({ _id: args.id });
 };
 
-const authors = book => {
-  return Author.find({ _id: { $in: book.authors } }).exec();
-};
+// const authors = book => {
+//   console.log('called in authors');
+//   return Author.find({ _id: { $in: book.authors } }).exec();
+// };
 
-const genres = book => {
-  return Genre.find({ _id: { $in: book.genres } }).exec();
-};
+// const genres = book => {
+//   console.log('called in genres');
+//   return Genre.find({ _id: { $in: book.genres } }).exec();
+// };
 
-export default {
+module.exports = {
   Query: {
     book,
     books,
@@ -65,8 +70,8 @@ export default {
     updateBook,
     deleteBook,
   },
-  Book: {
-    authors,
-    genres,
-  },
+  // Book: {
+  //   // authors,
+  //   genres,
+  // },
 };

@@ -5,8 +5,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Dialog from '@material-ui/core/Dialog';
-import { useQuery, useMutation } from '@apollo/react-hooks';
-import { gql } from 'apollo-boost';
+import { useQuery, useMutation, gql } from '@apollo/client';
 import { useHistory } from 'react-router-dom';
 import { Ul, Li } from './elements/Li';
 import SmallTitle from './elements/SmallTitle';
@@ -14,7 +13,7 @@ import Small from './elements/Small';
 
 export default function DeleteBook(props) {
   let history = useHistory();
-  const { data } = useQuery(BOOK_DETAILS, {
+  const { loading, error, data } = useQuery(BOOK_DETAILS, {
     variables: { id: props.id },
   });
   const [deleteBook] = useMutation(DELETE_BOOK, {
@@ -31,7 +30,12 @@ export default function DeleteBook(props) {
       variables: { id: props.id },
     });
   };
-
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
   const copies = data.bookInstances.filter(fx => fx.book.id === data.book.id);
 
   return ReactDOM.createPortal(
@@ -47,7 +51,7 @@ export default function DeleteBook(props) {
         <h2>{data.book.title}</h2>
         {copies.length > 0 ? (
           <>
-            <p>{`Delete the following copies of the book before deleting`}</p>
+            <p>{`Delete the following copies of the book before deleting "${data.book.title}"`}</p>
             <SmallTitle>Copies</SmallTitle>
             <Ul>
               {copies.map(ins => (

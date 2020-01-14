@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { gql } from 'apollo-boost';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery, gql } from '@apollo/client';
 import Pitch from '../components/elements/Pitch';
 import DisplayContent from '../components/elements/DisplayContent';
 import CountDisplay from '../components/elements/CountDisplay';
@@ -21,9 +20,9 @@ export default function FrontPage() {
   return (
     <>
       <Pitch>
-        Welcome to LocalLibrary, a very basic Express and GraphQL (Apollo)
-        backend, React and Apollo Frontend powered site developed as a tutorial
-        on the Mozilla Developer Network
+        A very basic Node/Express, MongoDB and GraphQL (Apollo) backend, React
+        and Apollo Frontend powered site, developed as a tutorial on the Mozilla
+        Developer Network
       </Pitch>
       <SearchBar />
       <IndexCount className="resource-count">

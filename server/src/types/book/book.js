@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const bookSchema = new mongoose.Schema({
   title: {
@@ -33,4 +33,10 @@ bookSchema.virtual('url').get(function() {
   return `/book/${this._id}`;
 });
 
-export default mongoose.model('book', bookSchema);
+bookSchema.virtual('status', {
+  ref: 'bookinstance',
+  localField: '_id',
+  foreignField: 'book',
+});
+
+module.exports = mongoose.model('book', bookSchema);

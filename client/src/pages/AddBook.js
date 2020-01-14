@@ -1,12 +1,12 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
+import { Cancel } from '@material-ui/icons';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import DisplayContent from '../components/elements/DisplayContent';
 import { LibTextField } from '../components/elements/LibTextField';
-import { gql } from 'apollo-boost';
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery, gql } from '@apollo/client';
 import { useHistory } from 'react-router-dom';
 import { LibForm } from '../components/elements/LibForm';
 import { Autocomplete } from '@material-ui/lab';
@@ -20,6 +20,10 @@ const AddBook = () => {
     onCompleted: data => history.push(data.addBook.url),
     onError: err => console.log(err),
   });
+
+  const cancelEntry = () => {
+    history.push('/books');
+  };
 
   if (loading) {
     return <DisplayContent>Loading...</DisplayContent>;
@@ -144,15 +148,27 @@ const AddBook = () => {
                 )}
               />
 
-              <Button
-                variant="contained"
-                color="primary"
-                size="large"
-                type="submit"
-                startIcon={<SaveIcon />}
-              >
-                Save
-              </Button>
+              <div className="buttom-actions">
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  size="large"
+                  type="button"
+                  onClick={cancelEntry}
+                  startIcon={<Cancel />}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="large"
+                  type="submit"
+                  startIcon={<SaveIcon />}
+                >
+                  Save
+                </Button>
+              </div>
             </LibForm>
             {/* <pre>{JSON.stringify(values, 2, null)}</pre> */}
           </>
